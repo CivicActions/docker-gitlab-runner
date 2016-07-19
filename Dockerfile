@@ -1,4 +1,6 @@
-FROM gitlab/gitlab-runner:latest
+FROM gitlab/gitlab-runner:alpine
+
+RUN apk --no-cache add curl
 
 # Install Docker
 RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz > docker.tgz && \
