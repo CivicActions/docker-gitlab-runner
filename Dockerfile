@@ -1,7 +1,7 @@
 FROM gitlab/gitlab-runner:latest
 
 # Install Docker
-RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz > docker.tgz && \
+RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-1.12.1.tgz > docker.tgz && \
   tar -xvzf docker.tgz && \
   mv docker/* /usr/local/bin && \
   chmod +x /usr/local/bin/* && \
