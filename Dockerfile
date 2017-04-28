@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-runner:latest
+FROM gitlab/gitlab-runner:v1.11.4
 
 # Install Docker
 RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-17.04.0-ce.tgz > docker.tgz && \
