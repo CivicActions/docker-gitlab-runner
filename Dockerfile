@@ -14,6 +14,6 @@ RUN curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-co
 # Install Python and Shipwright
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		python3 \
-    python3-pip \
-	&& rm -rf /var/lib/apt/lists/*
-  && pip install shipwright
+		python3-pip \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& pip install shipwright
