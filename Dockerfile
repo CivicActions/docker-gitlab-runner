@@ -1,15 +1,10 @@
 FROM gitlab/gitlab-runner:alpine
 
-RUN apk --no-cache add curl
+RUN apk --no-cache add curl docker git
 
-# Install Docker
-RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-1.11.2.tgz > docker.tgz && \
-  tar -xvzf docker.tgz && \
-  mv docker/* /usr/local/bin && \
-  chmod +x /usr/local/bin/* && \
-  rmdir docker
-
-# Install Docker Compose
-RUN curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+# Install latest version of Docker Compose
+RUN curl -L "https://github.com/docker/compose/releases/download/$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/docker/compose/releases/latest | awk -F / '{print $NF}')/docker-compose-$(uname -s)-$(uname -m)" > /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
+# Install git lfs
+RUN apk --no-cache add git-lfs
