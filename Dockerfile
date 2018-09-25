@@ -1,18 +1,14 @@
-FROM gitlab/gitlab-runner:bleeding
-# The bleeding tag is one that is currently passing security scans
+FROM gitlab/gitlab-runner:latest
 
 # Install Docker
-RUN curl -L https://get.docker.com/builds/Linux/x86_64/docker-17.05.0-ce.tgz > docker.tgz && \
-  tar -xvzf docker.tgz && \
-  mv docker/* /usr/local/bin && \
-  chmod +x /usr/local/bin/* && \
-  rmdir docker
+RUN curl -sSL https://get.docker.com/ | sh
 
-# Install Docker Compose
-RUN curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose && \
+
+# Install latest version of Docker Compose
+RUN curl -L "https://github.com/docker/compose/releases/download/$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/docker/compose/releases/latest | awk -F / '{print $NF}')/docker-compose-$(uname -s)-$(uname -m)" > /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
 # Install git lfs
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
     apt-get -y install git-lfs
 
