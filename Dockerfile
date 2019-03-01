@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-runner:v10.6.4
+FROM gitlab/gitlab-runner:v10.6.1
 
 # Install Docker
 RUN curl -sSL https://get.docker.com/ | sh
