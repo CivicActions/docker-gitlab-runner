@@ -18,6 +18,6 @@ RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | gr
   echo "Symlinking most recent stable Docker Compose version: ${LATEST}" && \
   ln -s "${LATEST}" /usr/local/bin/docker-compose
 
-# Install git lfs
+# Install git lfs and rsync
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
-  apt-get -y install git-lfs
+  apt-get -y install git-lfs rsync
