@@ -12,7 +12,7 @@ RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | gr
   echo "Fetching Docker Compose version ${COMPOSE_VERSION} to ${FILE}" && \
   curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o "${FILE}" && \
   # Occasionally the tag will be created but there won't be a release yet so check we have an executable.
-  if [[ "$(file --brief --mime-type ${FILE})" == "application/x-executable" ]]; then LATEST="${FILE}"; else rm "${FILE}"; fi; \
+  if [[ "$(/usr/bin/file --brief --mime-type ${FILE})" == "application/x-executable" ]]; then LATEST="${FILE}"; else rm "${FILE}"; fi; \
   done; \
   chmod a+x /usr/local/bin/docker-compose-* && \
   echo "Symlinking most recent stable Docker Compose version: ${LATEST}" && \
