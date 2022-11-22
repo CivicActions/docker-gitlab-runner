@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-runner:v12.7.1
+FROM gitlab/gitlab-runner:ubuntu-v15.1.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
