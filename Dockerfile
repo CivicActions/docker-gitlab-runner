@@ -1,12 +1,17 @@
-FROM gitlab/gitlab-runner:ubuntu-v15.1.1
+FROM gitlab/gitlab-runner:ubuntu-v16.1.1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install Docker
 RUN curl -sSL https://get.docker.com/ | sh
 
-# Install all versions of Docker Compose from 1.20 on
-RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP '[0-9]+\.[2-9][0-9]+\.[0-9]+$'); \
+# Install previous and final v1 versions
+# TODO: This can be removed once all projects have migrated to compose 2+
+RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o "/usr/local/bin/docker-compose-1.29.2" && \
+  curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o "/usr/local/bin/docker-compose-1.27.4"
+
+# Install most recent 10 versions of Docker Compose
+RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n10); \
   for COMPOSE_VERSION in $TAGS; do \
   export FILE="/usr/local/bin/docker-compose-${COMPOSE_VERSION}" && \
   echo "Fetching Docker Compose version ${COMPOSE_VERSION} to ${FILE}" && \
