@@ -8,7 +8,8 @@ RUN curl -sSL https://get.docker.com/ | sh
 # Install previous and final v1 versions
 # TODO: This can be removed once all projects have migrated to compose 2+
 RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o "/usr/local/bin/docker-compose-1.29.2" && \
-  curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o "/usr/local/bin/docker-compose-1.27.4"
+  curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o "/usr/local/bin/docker-compose-1.27.4" && \
+  ln -s "/usr/local/bin/docker-compose-1.27.4" /usr/local/bin/docker-compose
 
 # Install most recent 10 versions of Docker Compose
 RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n10); \
@@ -20,10 +21,8 @@ RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | gr
   if [[ "$(/usr/bin/file --brief --mime-type ${FILE})" == "application/x-executable" ]]; then LATEST="${FILE}"; else rm "${FILE}"; fi; \
   done; \
   chmod a+x /usr/local/bin/docker-compose-* && \
-  # For now, hardcode LATEST to old version, but encourage projects to update.
-  LATEST="/usr/local/bin/docker-compose-1.27.4" && \
   echo "Symlinking most recent stable Docker Compose version: ${LATEST}" && \
-  ln -s "${LATEST}" /usr/local/bin/docker-compose
+  ln -s "${LATEST}" /usr/local/bin/docker-compose-latest
 
 # Install git lfs and rsync
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash && \
