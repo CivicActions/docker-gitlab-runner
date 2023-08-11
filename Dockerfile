@@ -20,6 +20,8 @@ RUN TAGS=$(git ls-remote https://github.com/docker/compose | grep refs/tags | gr
   if [[ "$(/usr/bin/file --brief --mime-type ${FILE})" == "application/x-executable" ]]; then LATEST="${FILE}"; else rm "${FILE}"; fi; \
   done; \
   chmod a+x /usr/local/bin/docker-compose-* && \
+  # For now, hardcode LATEST to old version, but encourage projects to update.
+  LATEST="/usr/local/bin/docker-compose-1.27.4" && \
   echo "Symlinking most recent stable Docker Compose version: ${LATEST}" && \
   ln -s "${LATEST}" /usr/local/bin/docker-compose
 
